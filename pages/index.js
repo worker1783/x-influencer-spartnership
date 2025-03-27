@@ -95,7 +95,7 @@ export default function XLogin() {
                     onChange={(e) => setEmail(e.target.value)} 
                     className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
                   />
-                  <button onClick={() => setStep(2)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                  <button onClick={() => setStep(2)} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">
                     Next
                   </button>
                 </>
@@ -109,7 +109,7 @@ export default function XLogin() {
                     onChange={(e) => setIdentifier(e.target.value)} 
                     className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
                   />
-                  <button onClick={() => setStep(3)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                  <button onClick={() => setStep(3)} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">
                     Next
                   </button>
                 </>
