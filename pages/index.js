@@ -11,10 +11,11 @@ export default function XLogin() {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    const storedDarkMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(storedDarkMode);
-    document.documentElement.classList.toggle("dark", storedDarkMode);
-  }, []);
+  const storedDarkMode = localStorage.getItem("darkMode");
+  const isDark = storedDarkMode === null ? true : storedDarkMode === "true"; // Default to dark if no preference
+  setDarkMode(isDark);
+  document.documentElement.classList.toggle("dark", isDark);
+}, []);
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => {
